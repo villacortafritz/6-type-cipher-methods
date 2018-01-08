@@ -67,7 +67,7 @@
             // SideBar
             // 
             this.SideBar.BackColor = System.Drawing.Color.Maroon;
-            this.SideBar.Location = new System.Drawing.Point(0, 100);
+            this.SideBar.Location = new System.Drawing.Point(0, 0);
             this.SideBar.Name = "SideBar";
             this.SideBar.Size = new System.Drawing.Size(10, 50);
             this.SideBar.TabIndex = 3;

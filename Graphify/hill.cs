@@ -21,5 +21,10 @@ namespace Graphify
         {
             Application.Exit();
         }
+
+        private void richTextBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
