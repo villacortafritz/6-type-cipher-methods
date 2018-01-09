@@ -45,9 +45,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.txtKeyWord = new System.Windows.Forms.RichTextBox();
+            this.txtKey = new System.Windows.Forms.RichTextBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.chkReplace = new System.Windows.Forms.CheckBox();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -120,6 +119,7 @@
             // 
             // txtOriginal
             // 
+            this.txtOriginal.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtOriginal.Location = new System.Drawing.Point(30, 478);
             this.txtOriginal.Name = "txtOriginal";
             this.txtOriginal.Size = new System.Drawing.Size(680, 50);
@@ -164,6 +164,7 @@
             // 
             // txtDecrypt
             // 
+            this.txtDecrypt.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtDecrypt.Location = new System.Drawing.Point(30, 373);
             this.txtDecrypt.Name = "txtDecrypt";
             this.txtDecrypt.Size = new System.Drawing.Size(680, 50);
@@ -173,6 +174,7 @@
             // txtEncrypt
             // 
             this.txtEncrypt.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtEncrypt.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtEncrypt.Location = new System.Drawing.Point(30, 263);
             this.txtEncrypt.Name = "txtEncrypt";
             this.txtEncrypt.Size = new System.Drawing.Size(680, 50);
@@ -227,14 +229,15 @@
             this.label5.TabIndex = 32;
             this.label5.Text = "Playfair Cipher";
             // 
-            // txtKeyWord
+            // txtKey
             // 
-            this.txtKeyWord.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtKeyWord.Location = new System.Drawing.Point(200, 170);
-            this.txtKeyWord.Name = "txtKeyWord";
-            this.txtKeyWord.Size = new System.Drawing.Size(200, 50);
-            this.txtKeyWord.TabIndex = 34;
-            this.txtKeyWord.Text = "";
+            this.txtKey.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtKey.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtKey.Location = new System.Drawing.Point(200, 170);
+            this.txtKey.Name = "txtKey";
+            this.txtKey.Size = new System.Drawing.Size(510, 50);
+            this.txtKey.TabIndex = 34;
+            this.txtKey.Text = "";
             // 
             // label7
             // 
@@ -244,26 +247,14 @@
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(159, 36);
             this.label7.TabIndex = 35;
-            this.label7.Text = "Encryption Keyword:\r\n(minimum length: 6)";
-            // 
-            // chkReplace
-            // 
-            this.chkReplace.AutoSize = true;
-            this.chkReplace.Font = new System.Drawing.Font("Century Gothic", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.chkReplace.Location = new System.Drawing.Point(445, 180);
-            this.chkReplace.Name = "chkReplace";
-            this.chkReplace.Size = new System.Drawing.Size(207, 22);
-            this.chkReplace.TabIndex = 36;
-            this.chkReplace.Text = "Check to replace i with j";
-            this.chkReplace.UseVisualStyleBackColor = true;
+            this.label7.Text = "Encryption Keyword:\r\nmust have 26 char.";
             // 
             // playfair
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.chkReplace);
             this.Controls.Add(this.label7);
-            this.Controls.Add(this.txtKeyWord);
+            this.Controls.Add(this.txtKey);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.btnOff);
@@ -306,8 +297,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.RichTextBox txtKeyWord;
+        private System.Windows.Forms.RichTextBox txtKey;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.CheckBox chkReplace;
     }
 }

@@ -80,6 +80,7 @@
             // txtEncrypt
             // 
             this.txtEncrypt.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtEncrypt.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtEncrypt.Location = new System.Drawing.Point(30, 200);
             this.txtEncrypt.Name = "txtEncrypt";
             this.txtEncrypt.Size = new System.Drawing.Size(680, 50);
@@ -88,6 +89,7 @@
             // 
             // txtDecrypt
             // 
+            this.txtDecrypt.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtDecrypt.Location = new System.Drawing.Point(30, 320);
             this.txtDecrypt.Name = "txtDecrypt";
             this.txtDecrypt.Size = new System.Drawing.Size(680, 50);
@@ -132,6 +134,7 @@
             // 
             // txtOriginal
             // 
+            this.txtOriginal.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtOriginal.Location = new System.Drawing.Point(30, 450);
             this.txtOriginal.Name = "txtOriginal";
             this.txtOriginal.Size = new System.Drawing.Size(680, 50);

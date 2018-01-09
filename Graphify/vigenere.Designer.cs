@@ -37,13 +37,15 @@
             this.label6 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.richTextBox3 = new System.Windows.Forms.RichTextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.txtKey = new System.Windows.Forms.RichTextBox();
+            this.txtOriginal = new System.Windows.Forms.RichTextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.button2 = new System.Windows.Forms.Button();
+            this.btnDecrypt = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
-            this.richTextBox2 = new System.Windows.Forms.RichTextBox();
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.txtDecrypt = new System.Windows.Forms.RichTextBox();
+            this.txtEncrypt = new System.Windows.Forms.RichTextBox();
+            this.btnEncrypt = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -95,6 +97,7 @@
             this.button4.Size = new System.Drawing.Size(35, 35);
             this.button4.TabIndex = 59;
             this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // panel3
             // 
@@ -136,112 +139,138 @@
             this.panel2.Size = new System.Drawing.Size(750, 10);
             this.panel2.TabIndex = 56;
             // 
-            // richTextBox3
+            // label7
             // 
-            this.richTextBox3.Location = new System.Drawing.Point(30, 450);
-            this.richTextBox3.Name = "richTextBox3";
-            this.richTextBox3.Size = new System.Drawing.Size(680, 50);
-            this.richTextBox3.TabIndex = 55;
-            this.richTextBox3.Text = "";
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Century Gothic", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.Location = new System.Drawing.Point(30, 170);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(164, 36);
+            this.label7.TabIndex = 71;
+            this.label7.Text = "Encryption Keyword:\r\n(min. of 6 characters)";
+            // 
+            // txtKey
+            // 
+            this.txtKey.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtKey.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtKey.Location = new System.Drawing.Point(200, 170);
+            this.txtKey.Name = "txtKey";
+            this.txtKey.Size = new System.Drawing.Size(510, 50);
+            this.txtKey.TabIndex = 70;
+            this.txtKey.Text = "";
+            // 
+            // txtOriginal
+            // 
+            this.txtOriginal.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtOriginal.Location = new System.Drawing.Point(30, 478);
+            this.txtOriginal.Name = "txtOriginal";
+            this.txtOriginal.Size = new System.Drawing.Size(680, 50);
+            this.txtOriginal.TabIndex = 69;
+            this.txtOriginal.Text = "";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Century Gothic", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(30, 420);
+            this.label3.Location = new System.Drawing.Point(30, 453);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(99, 18);
-            this.label3.TabIndex = 54;
+            this.label3.TabIndex = 68;
             this.label3.Text = "Original Text";
             // 
-            // button2
+            // btnDecrypt
             // 
-            this.button2.BackColor = System.Drawing.Color.Maroon;
-            this.button2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.button2.FlatAppearance.BorderSize = 0;
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.ForeColor = System.Drawing.Color.White;
-            this.button2.Location = new System.Drawing.Point(630, 376);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(80, 30);
-            this.button2.TabIndex = 53;
-            this.button2.Text = "Decrypt";
-            this.button2.UseVisualStyleBackColor = false;
+            this.btnDecrypt.BackColor = System.Drawing.Color.Maroon;
+            this.btnDecrypt.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.btnDecrypt.FlatAppearance.BorderSize = 0;
+            this.btnDecrypt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnDecrypt.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnDecrypt.ForeColor = System.Drawing.Color.White;
+            this.btnDecrypt.Location = new System.Drawing.Point(630, 428);
+            this.btnDecrypt.Name = "btnDecrypt";
+            this.btnDecrypt.Size = new System.Drawing.Size(80, 30);
+            this.btnDecrypt.TabIndex = 67;
+            this.btnDecrypt.Text = "Decrypt";
+            this.btnDecrypt.UseVisualStyleBackColor = false;
+            this.btnDecrypt.Click += new System.EventHandler(this.btnDecrypt_Click_1);
             // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Century Gothic", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(30, 290);
+            this.label2.Location = new System.Drawing.Point(30, 348);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(115, 18);
-            this.label2.TabIndex = 52;
+            this.label2.TabIndex = 66;
             this.label2.Text = "Encrypted Text";
             // 
-            // richTextBox2
+            // txtDecrypt
             // 
-            this.richTextBox2.Location = new System.Drawing.Point(30, 320);
-            this.richTextBox2.Name = "richTextBox2";
-            this.richTextBox2.Size = new System.Drawing.Size(680, 50);
-            this.richTextBox2.TabIndex = 51;
-            this.richTextBox2.Text = "";
+            this.txtDecrypt.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtDecrypt.Location = new System.Drawing.Point(30, 373);
+            this.txtDecrypt.Name = "txtDecrypt";
+            this.txtDecrypt.Size = new System.Drawing.Size(680, 50);
+            this.txtDecrypt.TabIndex = 65;
+            this.txtDecrypt.Text = "";
             // 
-            // richTextBox1
+            // txtEncrypt
             // 
-            this.richTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.richTextBox1.Location = new System.Drawing.Point(30, 200);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(680, 50);
-            this.richTextBox1.TabIndex = 50;
-            this.richTextBox1.Text = "";
+            this.txtEncrypt.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtEncrypt.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtEncrypt.Location = new System.Drawing.Point(30, 263);
+            this.txtEncrypt.Name = "txtEncrypt";
+            this.txtEncrypt.Size = new System.Drawing.Size(680, 50);
+            this.txtEncrypt.TabIndex = 64;
+            this.txtEncrypt.Text = "";
             // 
-            // button1
+            // btnEncrypt
             // 
-            this.button1.BackColor = System.Drawing.Color.Maroon;
-            this.button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.button1.FlatAppearance.BorderSize = 0;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.ForeColor = System.Drawing.Color.White;
-            this.button1.Location = new System.Drawing.Point(630, 256);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(80, 30);
-            this.button1.TabIndex = 49;
-            this.button1.Text = "Encrypt";
-            this.button1.UseVisualStyleBackColor = false;
+            this.btnEncrypt.BackColor = System.Drawing.Color.Maroon;
+            this.btnEncrypt.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.btnEncrypt.FlatAppearance.BorderSize = 0;
+            this.btnEncrypt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnEncrypt.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnEncrypt.ForeColor = System.Drawing.Color.White;
+            this.btnEncrypt.Location = new System.Drawing.Point(630, 318);
+            this.btnEncrypt.Name = "btnEncrypt";
+            this.btnEncrypt.Size = new System.Drawing.Size(80, 30);
+            this.btnEncrypt.TabIndex = 63;
+            this.btnEncrypt.Text = "Encrypt";
+            this.btnEncrypt.UseVisualStyleBackColor = false;
+            this.btnEncrypt.Click += new System.EventHandler(this.btnEncrypt_Click_1);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Century Gothic", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(30, 170);
+            this.label1.Location = new System.Drawing.Point(30, 238);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(404, 18);
-            this.label1.TabIndex = 48;
-            this.label1.Text = "Input message to be encrypted using Vigenère cipher";
+            this.label1.Size = new System.Drawing.Size(391, 18);
+            this.label1.TabIndex = 62;
+            this.label1.Text = "Input message to be encrypted using Playfair Cipher";
             // 
             // vigenere
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.txtKey);
+            this.Controls.Add(this.txtOriginal);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.btnDecrypt);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.txtDecrypt);
+            this.Controls.Add(this.txtEncrypt);
+            this.Controls.Add(this.btnEncrypt);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel2);
-            this.Controls.Add(this.richTextBox3);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.richTextBox2);
-            this.Controls.Add(this.richTextBox1);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.label1);
             this.Name = "vigenere";
             this.Size = new System.Drawing.Size(750, 550);
-            this.Load += new System.EventHandler(this.vigenere_Load);
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
@@ -260,13 +289,15 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.RichTextBox richTextBox3;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.RichTextBox txtKey;
+        private System.Windows.Forms.RichTextBox txtOriginal;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button btnDecrypt;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.RichTextBox richTextBox2;
-        private System.Windows.Forms.RichTextBox richTextBox1;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.RichTextBox txtDecrypt;
+        private System.Windows.Forms.RichTextBox txtEncrypt;
+        private System.Windows.Forms.Button btnEncrypt;
         private System.Windows.Forms.Label label1;
     }
 }

@@ -16,6 +16,8 @@ namespace Graphify
         {
             InitializeComponent();
             ceasar1.BringToFront();
+            SideBar.Height = btnCeasar.Height;
+            SideBar.Top = btnCeasar.Top;
         }
 
         private void Form1_Load(object sender, EventArgs e)
