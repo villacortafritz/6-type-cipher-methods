@@ -17,250 +17,344 @@ namespace Graphify
             InitializeComponent();
         }
 
-        public string key;
-        public string resultCipher;
-        public int[,] keymatrix;
-        public int[] linematrix;
-        public int[] resultmatrix;
+        public int[,] key = new int[2, 2];
 
-        public void divide(String temp, int s)
+        public void encrypt(int k, string msg)
         {
-            while (temp.Length > s)
-            { 
-                String sub = temp.Substring(0, s);
-                temp = temp.Substring(s, temp.Length);
-                perform(sub);
-            }
-            if(temp.Length == s)
+            
+            int n = key.ToString().Length;
+
+            int a = k % 10;
+            int b = (k % 100 - a) / 10;
+            int d = (k % 100 - a);
+            int c = (k % 1000 - (d + a)) / 100;
+            int g = (k % 10000 - (a + d)) / 1000;
+
+            key[0,0] = a;
+            key[0, 1] = b;
+            key[1, 0] = c;
+            key[1, 1] = g;
+
+            if (checkKeyOk(key, n))
             {
-                perform(temp);
+                MessageBox.Show("Key is Not suitable , Decryption May not be Possible , Try Again");
+                return;
             }
-            else if (temp.Length < s)
-            {
-                for(int i = temp.Length; i<s; i++)
-                {
-                    temp = temp + 'x';
-                }
-                perform(temp);
-            }
-        }
 
-        public void perform(String line)
-        {
-            linetomatrix(line);
-            linemultiplykey(line.Length);
-            result(line.Length);
-        }
+            string temp1 = msg.ToString().Replace(" ", String.Empty).ToLower();
+            msg = temp1;
+            int len = msg.Length;
 
-        public void keytomatrix(String key, int len)
-        {
-            keymatrix = new int[len, len];
-            int c = 0;
+            int xtra = modFun(len, n);
+            xtra = modFun(n - xtra, n);
+
+            int[] asciArr = new int[len + xtra];
             for(int i=0; i<len; i++)
             {
-                for(int j=0; j< len; j++)
-                {
-                    keymatrix[i, j] = ((int)key[c]) - 97;
-                    c++;
-                }
+                asciArr[i] = (int)msg[i] - 97;
             }
-        }
-
-        public void linetomatrix(String line)
-        {
-            linematrix = new int[line.Length];
-            for(int i=0; i<line.Length; i++)
+            while(xtra-- > 0)
             {
-                linematrix[i] = ((int)line[i]) - 97;
+                asciArr[len++] = 23;
             }
-        }
 
-        public void linemultiplykey(int len)
-        {
-            resultmatrix = new int[len];
-            for (int i = 0; i < len; i++)
-            {
-                for(int j=0; j<len; j++)
-                {
-                    resultmatrix[i] += keymatrix[i, j] * linematrix[j];
-                }
-                resultmatrix[i] %= 26;
-            }
-        }
-
-        public String result(int len)
-        {
-            String result = "";
+            int[] encryMsg = encry(key, asciArr, n, len);
+            string encryptedMessage = null;
             for(int i =0; i<len; i++)
             {
-                result += (char)(resultmatrix[i] + 97);
+                encryMsg[i] = modFun(encryMsg[i], 26) +97;
+                char temp = (char)encryMsg[i];
+                encryptedMessage += temp;
             }
-            resultCipher = result;
-            return result; // encrypted
+            txtDecrypt.Text = encryptedMessage;
         }
 
-        public Boolean check(String key, int len)
+        public void decrypt(int k, string msg)
         {
-            keytomatrix(key, len);
-            int d = determinant(keymatrix, len);
-            d = d % 26;
-            if (d == 0)
+            int n = key.ToString().Length;
+
+            int a = k % 10;
+            int b = (k % 100 - a) / 10;
+            int d = (k % 100 - a);
+            int c = (k % 1000 - (d + a)) / 100;
+            int g = (k % 10000 - (a + d)) / 1000;
+
+            key[0, 0] = a;
+            key[0, 1] = b;
+            key[1, 0] = c;
+            key[1, 1] = g;
+
+            if (checkKeyOk(key, n))
             {
-                MessageBox.Show("Invalid Key. Key is not invertible because determinant=0.");
-                return false;
+                MessageBox.Show("Key is Not suitable , Decryption May not be Possible , Try Again");
+                return;
             }
-            else if(d%2==0 || d%13 == 0)
+
+            string temp1 = msg.ToString().Replace(" ", String.Empty).ToLower();
+            msg = temp1;
+            int len = msg.Length;
+            int det = deter(key, n);
+
+            int[,] inKey = clearInverse(key, n);
+            int[,] finalInKey = clearConvert(inKey, n, det);
+
+            int xtra = modFun(len, n);
+            xtra = modFun(n - xtra, n);
+
+            int[] asciArr = new int[len];
+            for (int i = 0; i < len; i++)
             {
-                MessageBox.Show("Invalid Key. Key is not invertible because determinant has a common factor with 26.");
-                return false;
+                asciArr[i] = (int)msg[i] - 97;
             }
-            else
+            while (xtra-- > 0)
             {
-                return true;
+                asciArr[len++] = 23;
+            }
+
+            int[] decryMsg = decry(key, asciArr, n, len);
+            string encryptedMessage = null;
+            for (int i = 0; i < len; i++)
+            {
+                decryMsg[i] = modFun(decryMsg[i], 26) + 97;
+                char temp = (char)decryMsg[i];
+                encryptedMessage += temp;
+            }
+            txtOriginal.Text = encryptedMessage;
+        }
+
+        public int[] decry(int[,] a, int[] b, int n, int len)
+        {
+            int[] sol = new int[len];
+            for (int x = 0; x < len; x += n)
+            {
+                for (int i = 0; i < n; i++)
+                {
+                    for (int k = 0; k < n; k++)
+                    {
+                        sol[x + i] += a[i,k] * b[x + k];
+                    }
+                }
+            }
+            return sol;
+        }
+
+        public int[,] clearConvert(int[,] inKey, int n, int det)
+        {
+            int[] check = { 1, 3, 5, 7, 9, 11, 15, 17, 19, 21, 23, 25 };
+            int mulInv = 0;
+            for (int i = 0; i < 12; i++)
+            {
+                if (modFun(det * check[i] - 1, 26) == 0)
+                {
+                    mulInv = check[i];
+                    break;
+                }
+            }
+            if (mulInv == 0)
+            {
+                return inKey;
+            }
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < n; j++)
+                {
+                    inKey[i,j] = modFun((inKey[i,j] * mulInv), 26);
+                }
+            }
+            return inKey;
+        }
+
+        public int[,] clearInverse(int[,] key, int n)
+        {
+            // Find Inverse
+            int[,] a = new int[n,n];
+		    double[,] invKey = new double[n,n];
+
+		    for(int i=0 ; i<n ; i++) {
+			    for(int j=0 ; j<n ; j++) {
+				    invKey[i,j] = (double) key[i,j];
+			    }
+            }
+
+            double det = (double)deter(key, n);
+            invKey = invert(invKey);
+
+            for (int i=0 ; i<n ; i++) {
+                for(int j=0 ; j<n ; j++) {
+                    double prt = invKey[i,j] * det;
+                    double roundOff = Math.Round(prt * 100.0) / 100.0;
+                    long man = (long)roundOff;
+                    int wow = (int)man;
+                    a[i,j] = wow;
+                }
+            }
+            return a;
+        }
+
+        public double[,] invert(double[,] a)
+        {
+            int n = a.Length;
+            double[,] x = new double[n,n];
+            double[,] b = new double[n,n];
+            int[] index = new int[n];
+        
+            for (int i=0; i<n; ++i)
+                b[i,i] = 1;
+
+            // Transform the matrix into an upper triangle
+            gaussian(a, index);
+
+            // Update the matrix b[i][j] with the ratios stored
+            for (int i=0; i<n-1; ++i)
+                for (int j=i+1; j<n; ++j)
+                    for (int k=0; k<n; ++k)
+                        b[index[j],k]-= a[index[j],i]*b[index[i],k];
+
+            // Perform backward substitutions
+            for (int i=0; i<n; ++i)
+            {
+                x[n - 1,i] = b[index[n - 1],i]/a[index[n - 1],n-1];
+                for (int j=n-2; j>=0; --j)
+                {
+                    x[j,i] = b[index[j],i];
+                    for (int k=j+1; k<n; ++k)
+                    {
+                        x[j,i] -= a[index[j],k]*x[k,i];
+                    }
+                    x[j,i] /= a[index[j],j];
+                }
+            }
+            return x;
+        }
+
+        public void gaussian(double[,] a, int[] index)
+        {
+            int n = index.Length;
+            double[] c = new double[n];
+
+            // Initialize the index
+            for (int i = 0; i < n; ++i)
+                index[i] = i;
+
+            // Find the rescaling factors, one from each row
+            for (int i = 0; i < n; ++i)
+            {
+                double c1 = 0;
+                for (int j = 0; j < n; ++j)
+                {
+                    double c0 = Math.Abs(a[i,j]);
+                    if (c0 > c1) c1 = c0;
+                }
+                c[i] = c1;
+            }
+            // Search the pivoting element from each column
+            int k = 0;
+            for (int j = 0; j < n - 1; ++j)
+            {
+                double pi1 = 0;
+                for (int i = j; i < n; ++i)
+                {
+                    double pi0 = Math.Abs(a[index[i],j]);
+                    pi0 /= c[index[i]];
+                    if (pi0 > pi1)
+                    {
+                        pi1 = pi0;
+                        k = i;
+                    }
+                }
+
+                // Interchange rows according to the pivoting order
+                int itmp = index[j];
+                index[j] = index[k];
+                index[k] = itmp;
+                for (int i = j + 1; i < n; ++i)
+                {
+                    double pj = a[index[i],j] / a[index[j],j];
+
+                    // Record pivoting ratios below the diagonal
+                    a[index[i],j] = pj;
+
+                    // Modify other elements accordingly
+                    for (int l = j + 1; l < n; ++l)
+                        a[index[i],l] -= pj * a[index[j],l];
+                }
             }
         }
-        
-        public int determinant(int[,] A, int N)
+
+
+        public int deter(int[,] A, int N)
         {
             int det = 0;
-            int res;
             if (N == 1)
             {
-                res = A[0, 0];
+                det = A[0,0];
             }
             else if (N == 2)
             {
-                res = A[0, 0] * A[1, 1] - A[1, 0] * A[0, 1];
+                det = A[0,0] * A[1,1] - A[1,0] * A[0,1];
             }
             else
             {
-                res = 0;
-                for(int j1 =0; j1<N;j1++)
+                det = 0;
+                for (int j1 = 0; j1 < N; j1++)
                 {
-                    int[,] m = new int[N - 1, N - 1];
-                    for(int i=1; i<N; i++)
+                    int[,] m = new int[N - 1,0];
+                    for (int i = 1; i < N; i++)
                     {
                         int j2 = 0;
-                        for(int j =0;j<N; j++)
+                        for (int j = 0; j < N; j++)
                         {
                             if (j == j1)
-                            {
                                 continue;
-                            }
                             m[i - 1, j2] = A[i, j];
                             j2++;
                         }
                     }
-                    res += Convert.ToInt32(Math.Pow(-1.0, 1.0 + j1 + 1.0) * A[0, j1] * determinant(m, N - 1));
+                    det += Convert.ToInt32(Math.Pow(-1.0, 1.0 + j1 + 1.0) * A[0,j1] * deter(m, N - 1));
                 }
             }
-            return res;
+            return det;
         }
 
-        public void cofact(int[,] num, int f)
+        public Boolean checkKeyOk(int[,] a, int n)
         {
-            int[,] b = new int[f,f];
-            int[,] fac = new int[f, f];
-            int p, q, m, n, i, j;
-            for(q=0; q<f; q++)
+            int[] check = { 1, 3, 5, 7, 9, 11, 15, 17, 19, 21, 23, 25 };
+            for (int i = 0; i < 12; i++)
             {
-                for(p=0; p<f; p++)
+                if (modFun(deter(a, n), 26) == check[i])
                 {
-                    m = 0;
-                    n = 0;
-                    for (i=0; i<f; i++)
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public int modFun(int a, int n)
+        {
+            if (a > 0)
+            {
+                return a % n;
+            }
+            else
+            {
+                return ((a % n) + n) % n;
+            }
+        }
+
+        public int[] encry(int[,] a, int[] b, int n, int len)
+        {
+            int[] sol = new int[len];
+            for (int x = 0; x < len; x += n)
+            {
+                for (int i = 0; i < n; i++)
+                {
+                    for (int k = 0; k < n; k++)
                     {
-                        for(j=0; j<f; j++)
-                        {
-                            b[i, j] = 0;
-                            if(i!=q && j != p)
-                            {
-                                b[m, n] = num[i, j];
-                                if (n < (f - 2))
-                                {
-                                    n++;
-                                }
-                                else
-                                {
-                                    n = 0;
-                                    m++;
-                                }
-                            }
-                        }
+                        sol[x + i] += a[i,k] * b[x + k];
                     }
-                    fac[q, p] = (int)Math.Pow(-1, q + p) * determinant(b, f - 1);
                 }
             }
-            trans(fac, f);
-        }
-
-        void trans(int[,] fac, int r)
-        {
-            int i, j;
-            int[,] b = new int[r,r];
-            int[,] inv = new int[r,r];
-            int d = determinant(keymatrix, r);
-            int mid = mi(d % 26);
-            mid %= 26;
-            if (mid < 0)
-            {
-                mid += 26;
-            }
-            for(i=0; i<r; i++)
-            {
-                for(j =0; j<r; j++)
-                {
-                    b[i, j] = fac[j, i];
-                }
-            }
-            for(i=0; i<r; i++)
-            {
-                for(j=0; j<r; j++)
-                {
-                    inv[i, j] = b[i, j] % 26;
-                    if(inv[i,j] < 0)
-                    {
-                        inv[i, j] += 26;
-                    }
-                    inv[i, j] *= mid;
-                    inv[i, j] %= 26;
-                }
-            }
-            string s = matrixtoinvkey(inv, r); //Inverse key
-            key = s;
-        }
-
-        public String matrixtoinvkey(int[,] inv, int n)
-        {
-            String invkey = "";
-            for(int i=0; i<n; i++)
-            {
-                for(int j=0; j<n; j++)
-                {
-                    invkey += (char)(inv[i, j] + 97);
-                }
-            }
-            return invkey;
-        }
-
-        public int mi(int d)
-        {
-            int q, r1, r2, r, t1, t2, t;
-            r1 = 26;
-            r2 = d;
-            t1 = 0;
-            t2 = 1;
-            while (r1 != 1 && r2 != 0)
-            {
-                q = r1 / r2;
-                r = r1 % r2;
-                t = t1 - (t2 * q);
-                r1 = r2;
-                r2 = r;
-                t1 = t2;
-                t2 = t;
-            }
-            return (t1 + t2);
+            return sol;
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -280,65 +374,18 @@ namespace Graphify
 
         private void btnDecrypt_Click(object sender, EventArgs e)
         {
-            string line = txtDecrypt.Text;
-            double sq = Math.Sqrt(key.Length);
-            int s = (int)sq;
-            if (check(key, s))
-            {
-                divide(line, s);
-
-                cofact(keymatrix, s);
-                txtOriginal.Text = resultCipher;
-            }
+            string n = txtKey.Text;
+            string msg = txtDecrypt.Text;
+            int k = Convert.ToInt32(n);
+            decrypt(k, msg);
         }
         private void btnEncrypt_Click(object sender, EventArgs e)
         {
-            string line = txtEncrypt.Text;
-            key = txtKey.Text;
-            if (key.All(char.IsLetter) == false)
-            {
-                MessageBox.Show("Key must be composed of letters!");
-                txtKey.Clear();
-                txtEncrypt.Clear();
-                return;
-            }
-            double sq = Math.Sqrt(key.Length);
-            if (sq != (long)sq)
-            {
-                MessageBox.Show("Invalid key length. Does not form a square matrix");
-                txtKey.Clear();
-                txtEncrypt.Clear();
-                return;
-            }
-            else
-            {
-                int s = (int)sq;
-                if (check(key, s))
-                {
-                    divide(line, s);
-                    txtDecrypt.Text = resultCipher;
-                    cofact(keymatrix, s);
-                }
-            }
+            string n = txtKey.Text;
+            string msg = txtEncrypt.Text;
+            int k = Convert.ToInt32(n);
+            encrypt(k, msg);
         }
 
-        /*
-		System.out.println("Enter the line: ");
-		String line=in.readLine();
-		System.out.println("Enter the key: ");
-		String key=in.readLine();
-		double sq=java.lang.Math.sqrt(key.length());
-		if(sq!=(long)sq)
-			System.out.println("Invalid key length!!! Does not form a square matrix...");
-		else
-		{
-			int s=(int)sq;
-			if(obj.check(key,s))
-			{
-				System.out.println("Result:");
-				obj.divide(line,s);
-				obj.cofact(obj.keymatrix,s);
-			}
-		}*/
     }
 }
