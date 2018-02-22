@@ -15,3 +15,5 @@ This includes:
   -Vigenere Cipher
   
   -Railfence Cipher
+  
+Just input a message, provide a key and press encipher. To decrypt the message, press decipher.
